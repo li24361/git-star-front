@@ -1,28 +1,28 @@
 <template>
     <el-container>
       <el-header>
-        <el-row >
-          <el-col align="right" v-if="islogin">
-            <el-menu class="el-menu-demo" mode="horizontal" router>
-              <el-submenu index="" >
-                <template slot="title" >{{loginName}}</template>
-                <el-menu-item index="" @click="logout">登出</el-menu-item>
-              </el-submenu>
-            </el-menu>
-          </el-col>
-        </el-row>
+        <el-menu :default-active="$route.path" mode="horizontal" router>
+        <template  v-if="islogin">
+          <el-submenu index="" style="float: right;" >
+            <template slot="title"><i class="el-icon-menu"> {{loginName}}</i></template>
+            <el-menu-item index=""><i class="el-icon-setting"></i> Settings</el-menu-item>
+            <el-menu-item index=""  @click="logout"><i class="el-icon-circle-close"></i> Logout</el-menu-item>
+          </el-submenu>
+        </template>
+          <el-menu-item index="/" style="float: right;">说明</el-menu-item>
+          <el-menu-item index="/" style="float: right;">主页</el-menu-item>
+        </el-menu>
       </el-header>
       <el-main style="height: 850px">
         <div id="app">
           <template v-if="!islogin ">
             <img src="https://i.loli.net/2019/10/26/2c83rMLYOZtXI4V.png" style="margin-bottom: 20px" />
             <div>
-              <el-button type="primary" :loading="loading" @click="login" icon="el-icon-user-solid">Sign in with Github</el-button>
+              <el-button type="primary" :loading="loading" @click="login" icon="el-icon-user-solid">使用 Github 登录</el-button>
             </div>
             <div>
               <h1>为什么需要登录？</h1>
-              该项目使用acccesstoken访问github的api，有次数限制
-
+              该项目使用acccess_token访问github的api，每小时有次数限制,所以使用各位自己的
             </div>
           </template>
           <template v-else-if="islogin">
@@ -30,7 +30,7 @@
               <img src="https://i.loli.net/2019/10/26/2c83rMLYOZtXI4V.png" style="margin-bottom: 20px" />
               <el-row  type="flex" justify="center">
                 <el-col :span="3" align="right" :offset="9"><el-input v-model="input"  placeholder="input your login" ></el-input></el-col>
-                <el-col :span="11" align="left" :offset="1"><el-button type="primary" :loading="loading"  @click="query" icon="el-icon-user-solid">Query By login</el-button></el-col>
+                <el-col :span="11" align="left" :offset="1"><el-button type="primary" :loading="loading"  @click="query" icon="el-icon-search">查询</el-button></el-col>
               </el-row>
             </div>
           </template>
@@ -90,16 +90,9 @@
 
 <script>
 
-import ElCol from "element-ui/packages/col/src/col";
-import ElRow from "element-ui/packages/row/src/row";
-import ElCard from "../node_modules/element-ui/packages/card/src/main.vue";
 
 
 export default {
-    components: {
-        ElCard,
-        ElRow,
-        ElCol},
     data() {
         return {
             input: this.$cookies.get("login"),
@@ -108,13 +101,14 @@ export default {
             loginName: this.$cookies.get("login"),
             activeLink: null,
             userIndex: {},
+            itemStyle: { normal: { areaStyle: { type: 'default' } } },
             chartData: {
                 dimensions: [
-                    {name: 'star ', max: 100},
-                    {name: 'follower ', max: 100},
-                    {name: 'own code ', max: 100},
-                    {name: 'open source', max: 100},
-                    {name: 'activity', max: 100}
+                    {name: '星星', max: 100},
+                    {name: '粉丝', max: 100},
+                    {name: '代码影响', max: 100},
+                    {name: '其他项目影响', max: 100},
+                    {name: '活跃度', max: 100}
                 ],
                 measures: []
             }
@@ -150,7 +144,11 @@ export default {
                 window.location = response.data;
             })
             .catch(error => {
-                this.$notify(error.data)
+                this.$notify({
+                    title: '错误提示',
+                    type: 'error',
+                    message: 'server error!'
+                });
             })
             .finally(() => this.loading = false)
     },
@@ -168,6 +166,7 @@ export default {
             .post('/search', {
                 login: this.input,
                 userName: this.$cookies.get("login")
+//                  userName: "li24361"
             },
             {
                 headers: {
@@ -245,6 +244,10 @@ export default {
   width: 70%;
   margin: 10px auto;
   text-align: center;
+}
+.el-menu--horizontal .el-submenu > .el-menu {
+  left: initial !important;
+  right: 0;
 }
 
 </style>

@@ -2,6 +2,8 @@ const resolve = require('path').resolve
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const url = require('url')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CompressionPlugin = require('compression-webpack-plugin');
 const publicPath = ''
 
 module.exports = (options = {}) => ({
@@ -14,6 +16,18 @@ module.exports = (options = {}) => ({
     filename: options.dev ? '[name].js' : '[name].js?[chunkhash]',
     chunkFilename: '[id].js?[chunkhash]',
     publicPath: options.dev ? '/assets/' : publicPath
+  },
+  externals: {
+      'vue': 'Vue',
+      "element-ui": "ELEMENT",
+      'vue-router': 'VueRouter',
+      'axios': 'axios',
+      'vue-axios': 'VueAxios',
+      'vue-router': 'VueRouter',
+      'vue-cookies': 'VueCookies',
+      "ve-charts": "VeCharts ",
+      "echarts": "echarts",
+      'vuex': 'Vuex'
   },
   module: {
     rules: [{
@@ -46,6 +60,14 @@ module.exports = (options = {}) => ({
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html'
+    }),
+    new BundleAnalyzerPlugin(),
+    new CompressionPlugin({
+        filename: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+        threshold: 10240,
+        minRatio: 0.8
     })
   ],
   resolve: {
@@ -70,5 +92,5 @@ module.exports = (options = {}) => ({
       index: url.parse(options.dev ? '/assets/' : publicPath).pathname
     }
   },
-  devtool: options.dev ? '#eval-source-map' : '#source-map'
+  devtool: options.dev ? '#eval-source-map' : '#cheap-module-source-map'
 })
