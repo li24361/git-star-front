@@ -32,31 +32,13 @@ const router = new VueRouter({
     ]
 })
 
+const loading =
 
 
-const store = new Vuex.Store({
-    state: {
-        loginUser: {
-            loginName:'登录',
-            token: ''
-        },
-        showQuery: false,
-    },
-
-    mutations: {
-        save(state,payload){
-            state.loginUser.loginName = payload;
-        },
-        show(state,payload){
-            state.showQuery = payload;
-        }
-    }
-})
 
 new Vue({
     el: '#app',
     router: router,
-    store,
     render: h => h(App)
 })
 

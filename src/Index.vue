@@ -97,12 +97,13 @@
 <script>
 
 
+import { Loading } from 'element-ui';
+
 
 export default {
     data() {
         return {
             input: this.$cookies.get("login"),
-            loading: false,
             legend: {show: false},
             loginName: this.$cookies.get("login"),
             activeLink: null,
@@ -143,8 +144,8 @@ export default {
     },
   methods: {
     login() {
-        this.loading = true;
-        this.axios
+      const loadingInstance = Loading.service({ fullscreen: true });
+      this.axios
             .get('/login', {
                 headers: {
                     'Access-Control-Allow-Origin': '*'
@@ -160,7 +161,7 @@ export default {
                     message: 'server error!'
                 });
             })
-            .finally(() => this.loading = false)
+            .finally()
     },
     query() {
         if (!this.input) {
