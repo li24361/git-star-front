@@ -138,7 +138,7 @@ export default {
             return this.$cookies.isKey("login")
         },
         githublink() {
-            return 'https://github.com/'+this.userIndex.login
+            return 'https://github.com/'+this.input
         }
     },
   methods: {
