@@ -22,6 +22,7 @@ import Index from './Index.vue'
 // Vue.use(Vuex);
 
 axios.defaults.baseURL = 'http://api.txtxtx.com.cn';
+// axios.defaults.baseURL = 'http://localhost:8999';
 
 const router = new VueRouter({
     mode:'history',

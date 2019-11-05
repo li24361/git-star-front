@@ -34,7 +34,7 @@
               </el-row>
             </div>
           </template>
-          <template v-if="!!this.userIndex.login">
+          <template v-if="this.showResult">
             <el-container>
               <el-aside width="400px" align="center">
                 <el-card class="box-card">
@@ -75,9 +75,9 @@
                 </el-header>
                 <el-main>
                   <template>
-                    <ve-radar-chart :data="chartData" :legend="legend"/>
+                    <ve-radar-chart :data="chartData" :legend="legend" :settings="setting"/>
                   </template>
-
+                  
                 </el-main>
               </el-container>
             </el-container>
@@ -106,9 +106,17 @@ export default {
             input: this.$cookies.get("login"),
             legend: {show: false},
             loginName: this.$cookies.get("login"),
-            activeLink: null,
+            showResult: false,
             userIndex: {},
-            itemStyle: { normal: { areaStyle: { type: 'default' } } },
+            setting: {
+              itemStyle: {
+                normal: {
+                  areaStyle: {
+                    type: 'default'
+                  }
+                }
+              }
+            },
             chartData: {
                 dimensions: [
                     {name: '星星', max: 100},
@@ -126,7 +134,7 @@ export default {
             return this.chartData.measures.push({
                 name: '明细',
                 data:[
-                this.userIndex.allStarsScore,
+                    this.userIndex.allStarsScore,
                     this.userIndex.followerScore,
                     this.userIndex.repositoryHIndexScore,
                     this.userIndex.contributeRepositoryHIndexScore,
@@ -172,7 +180,7 @@ export default {
             });
             return true;
         }
-        this.loading = true;
+      const loadingInstance = Loading.service({ fullscreen: true });
         this.axios
             .post('/search', {
                 login: this.input,
@@ -213,6 +221,7 @@ export default {
                     this.userIndex.repositoryHIndexScore = response.data.data.repositoryHIndexScore;
                     this.userIndex.contributeRepositoryHIndexScore = response.data.data.contributeRepositoryHIndexScore;
                     this.userIndex.contributesScore = response.data.data.contributesScore;
+                    this.showResult=true
                 } else{
                     console.log(response)
                     this.$notify({
@@ -230,7 +239,7 @@ export default {
                     message: error,
                 });
             })
-            .finally(() => this.loading = false)
+            .finally(() => loadingInstance.close())
     },
     logout() {
         this.$cookies.remove("login")
