@@ -25,3 +25,24 @@
     }
   }
 </script>
+<style>
+  #app {
+    font-family: Helvetica, sans-serif;
+    text-align: center;
+  }
+
+  .el-aside .el-row {
+    margin-bottom: 20px;
+  }
+
+  .el-col {
+    border-radius: 4px;
+  }
+
+  .el-container {
+    width: 800px;
+    margin: 10px auto;
+    text-align: center;
+  }
+
+</style>

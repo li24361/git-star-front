@@ -1,7 +1,7 @@
 <template>
     <div>
+        <img src="https://i.loli.net/2019/11/05/4N1eiBL69gSzTMZ.png" style="margin-bottom: 20px;" width="300px"/>
         <template v-if="!islogin ">
-            <img src="https://i.loli.net/2019/10/26/2c83rMLYOZtXI4V.png" style="margin-bottom: 20px"/>
             <div>
                 <el-button type="primary" :loading="loading" @click="login" icon="el-icon-user-solid">使用 Github 登录</el-button>
             </div>
@@ -12,7 +12,6 @@
         </template>
         <template v-else-if="islogin">
             <div>
-                <img src="https://i.loli.net/2019/10/26/2c83rMLYOZtXI4V.png" style="margin-bottom: 20px"/>
                 <el-row type="flex" justify="center">
                     <el-col :span="3" align="right" :offset="9">
                         <el-input v-model="input" placeholder="input your login"></el-input>
@@ -238,17 +237,6 @@
 
     .el-col {
         border-radius: 4px;
-    }
-
-    .el-container {
-        width: 800px;
-        margin: 10px auto;
-        text-align: center;
-    }
-
-    .el-menu--horizontal .el-submenu > .el-menu {
-        left: initial !important;
-        right: 0;
     }
 
 </style>
