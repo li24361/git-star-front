@@ -5,7 +5,7 @@
         </el-col>
         <el-col :span="18">
             <el-menu :default-active="$route.path" mode="horizontal" router>
-                <template v-if="islogin">
+                <template v-if="isLogin">
                     <el-submenu index="" style="float: right;">
                         <template slot="title"><i class="el-icon-menu"> {{loginName}}</i></template>
                         <el-menu-item index=""><i class="el-icon-setting"></i> Settings</el-menu-item>
@@ -24,20 +24,22 @@
         data() {
             return {
                 name: 'header',
+                isLogin:  this.$cookies.isKey("login"),
                 loginName: this.$cookies.get("login"),
             }
         },
         methods: {
             logout() {
                 this.$cookies.remove("login")
-                this.$router.go(0)
+                this.isLogin =  this.$cookies.isKey("login")
+                this.$router.push('/')
             },
         },
-        computed: {
-            islogin() {
-                return this.$cookies.isKey("login")
-            }
-        }
+        // computed: {
+        //     isLogin() {
+        //         return this.$cookies.isKey("login")
+        //     }
+        // }
     }
 </script>
 

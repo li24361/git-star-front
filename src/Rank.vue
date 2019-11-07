@@ -1,6 +1,8 @@
 <template>
     <el-table
             :data="tableData"
+            v-loading="loading"
+            height="800"
             stripe
             style="width: 100%">
         <el-table-column
@@ -21,12 +23,12 @@
         <el-table-column
                 prop="ownStar"
                 label="stars"
-                width="100">
+                width="90">
         </el-table-column>
         <el-table-column
                 prop="follower"
                 label="follower"
-                width="100">
+                width="90">
         </el-table-column>
         <el-table-column
                 prop="primaryLanguage"
@@ -36,7 +38,7 @@
         <el-table-column
                 prop="contributeYears"
                 label="贡献年份"
-                width="100">
+                width="80">
         </el-table-column>
         <el-table-column
                 prop="allScore"
@@ -49,10 +51,11 @@
     export default {
         data() {
             return {
-                tableData: []
+                tableData: [],
+                loading: true
             }
         },
-        mounted: function () {
+        created: function () {
             this.axios
                 .get('/search/list', {
                     headers: {
@@ -70,7 +73,7 @@
                         message: 'server error!'
                     });
                 })
-                .finally()
+                .finally(() => this.loading =false)
         }
     }
 </script>
